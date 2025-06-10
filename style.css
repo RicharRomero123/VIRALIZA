@@ -1,0 +1,152 @@
+/* === 1. SISTEMA DE DISEÑO Y VARIABLES === */
+:root { --color-primary: #00f2ea; --color-secondary: #ff0050; --color-background: #010101; --color-surface: #121212; --color-surface-light: #1d1d1d; --color-text: #e4e4e4; --color-text-muted: #888888; --font-family-base: 'Poppins', sans-serif; --border-radius: 12px; }
+
+/* === 2. RESET Y ESTILOS GLOBALES === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body { font-family: var(--font-family-base); background-color: var(--color-background); color: var(--color-text); line-height: 1.7; font-size: 16px; }
+.container { width: 90%; max-width: 1100px; margin-left: auto; margin-right: auto; }
+.section { padding: 80px 0; }
+.section-title { font-size: 2.8rem; text-align: center; margin-bottom: 1rem; }
+.subtitle { font-size: 1.2rem; color: var(--color-text-muted); max-width: 650px; margin: 0 auto 4rem auto; text-align: center; }
+.highlight-pink { color: var(--color-secondary); }
+.highlight-cyan { color: var(--color-primary); }
+
+/* === 3. COMPONENTES REUTILIZABLES === */
+.button { display: inline-block; font-weight: 600; text-align: center; cursor: pointer; border: 2px solid transparent; padding: 0.8rem 1.8rem; font-size: 1rem; border-radius: 50px; text-decoration: none; transition: all 0.3s ease; }
+.button-primary { background: linear-gradient(45deg, var(--color-secondary), #ff4500); color: #fff; box-shadow: 0 4px 15px rgba(255, 0, 80, 0.3); }
+.button-primary:hover { transform: translateY(-3px); box-shadow: 0 7px 20px rgba(255, 0, 80, 0.5); }
+.button.pulse { animation: pulseAnimation 1.5s infinite; }
+@keyframes pulseAnimation { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+.button-plan { background: linear-gradient(45deg, var(--color-primary), #00c1b8); color: var(--color-background); width: 100%; }
+.plan-card.popular .button-plan { background: linear-gradient(45deg, var(--color-secondary), #c400ff); color: #fff; }
+.button-full { width: 100%; padding-top: 1rem; padding-bottom: 1rem; font-size: 1.1rem; }
+.button-secondary { background-color: var(--color-surface-light); color: var(--color-text); border-color: #444; }
+.button-secondary:hover { background-color: #333; border-color: #555; }
+
+/* === 4. LAYOUT Y SECCIONES ESPECÍFICAS === */
+.header { background-color: rgba(1, 1, 1, 0.7); backdrop-filter: blur(12px); padding: 1rem 0; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 1000; }
+.header-container { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 1.8rem; font-weight: 800; color: #fff; text-decoration: none; background: linear-gradient(45deg, var(--color-secondary), var(--color-primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; }
+.main-nav ul { display: flex; list-style: none; gap: 2rem; }
+.main-nav a { color: var(--color-text); text-decoration: none; font-weight: 500; transition: color 0.3s; }
+.main-nav a:hover { color: var(--color-primary); }
+.hero-section { padding: 100px 0; min-height: 80vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(rgba(1, 1, 1, 0.7), rgba(1, 1, 1, 0.8)), url('https://images.pexels.com/photos/7175561/pexels-photo-7175561.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center/cover; }
+.hero-title { font-size: 3.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 1.5rem; }
+.benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+.benefit-card { background-color: var(--color-surface); padding: 2.5rem 2rem; border-radius: var(--border-radius); text-align: center; border: 1px solid #222; }
+.live-features-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; align-items: center; }
+.live-features-image img { width: 100%; height: auto; border-radius: var(--border-radius); }
+.live-features-content .benefits-list li { list-style: none; padding-left: 2rem; position: relative; }
+.live-features-content .benefits-list li::before { content: '✅'; position: absolute; left: 0; }
+.plans-container { display: flex; justify-content: center; align-items: stretch; gap: 2rem; flex-wrap: wrap; }
+.plan-card { background-color: var(--color-surface); padding: 2.5rem; border-radius: var(--border-radius); width: 100%; max-width: 380px; border: 1px solid #222; display: flex; flex-direction: column; text-align: center; }
+.plan-card.popular { border-color: var(--color-secondary); transform: scale(1.03); }
+.popular-badge { background: linear-gradient(45deg, var(--color-secondary), #c400ff); color: #fff; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.9rem; font-weight: 700; display: inline-block; margin-bottom: 1.5rem;}
+.plan-card .price { font-size: 3.5rem; font-weight: 800; color: var(--color-primary); }
+.plan-card .plan-description { color: var(--color-text-muted); flex-grow: 1; }
+.benefits-list { text-align: left; margin: 1.5rem 0; padding-left: 1rem; }
+.benefits-list li { margin-bottom: 0.8rem; list-style-type: '✔️ '; padding-left: 0.5rem; }
+.plan-card .button-plan { margin-top: auto; }
+.footer { background-color: #000; text-align: center; padding: 2rem 0; color: var(--color-text-muted); font-size: 0.9rem; }
+
+/* === 5. PÁGINAS OCULTAS Y FORMULARIO (CORREGIDO) === */
+.page-container { min-height: 100vh; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: fadeInPage 0.5s ease; }
+@keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
+.form-wrapper, .result-wrapper { background-color: var(--color-surface); padding: 2.5rem; border-radius: var(--border-radius); border: 1px solid #222; width: 100%; max-width: 600px; }
+.back-to-main { background: none; border: none; color: var(--color-text-muted); cursor: pointer; margin-bottom: 2rem; font-weight: 500; transition: color 0.3s; }
+.back-to-main:hover { color: var(--color-primary); }
+.form-group { margin-bottom: 1.5rem; }
+.form-group label { display: block; color: var(--color-text); margin-bottom: 0.5rem; font-weight: 500; }
+.form-group input { width: 100%; padding: 0.8rem 1rem; background-color: var(--color-background); border: 1px solid #333; border-radius: 8px; color: var(--color-text); font-size: 1rem; box-sizing: border-box; }
+.form-group input[type="file"] { padding: 0.5rem; }
+.profile-pic-preview { max-width: 80px; max-height: 80px; border-radius: 50%; margin-top: 1rem; border: 2px solid var(--color-primary); object-fit: cover; }
+.input-group { display: flex; gap: 0.5rem; }
+.input-group input { flex-grow: 1; }
+.input-group button { padding: 0 1.2rem; border-radius: 8px; border: none; background-color: var(--color-primary); color: var(--color-background); font-weight: bold; cursor: pointer; }
+#username-status { font-size: 0.9rem; margin-top: 0.5rem; min-height: 1.4em; font-weight: 600; }
+#username-status.success { color: #28a745; }
+#username-status.error { color: #dc3545; }
+#username-status.loading { color: #ffc107; }
+.form-notes { margin-top: 2.5rem; padding: 1.5rem; background-color: var(--color-surface-light); border-radius: 8px; border-left: 3px solid var(--color-primary); }
+.form-notes p { font-size: 0.9rem; color: var(--color-text-muted); margin: 0; }
+.form-notes ul { list-style-position: inside; padding-left: 0; margin-top: 0.5rem; font-size: 0.9rem; color: var(--color-text-muted); }
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; z-index: 2000; animation: fadeInPage 0.3s; }
+.modal-content { background-color: var(--color-surface-light); padding: 2rem; border-radius: var(--border-radius); box-shadow: 0 5px 25px rgba(0,0,0,0.5); width: 90%; max-width: 500px; border-top: 3px solid var(--color-primary); }
+.modal-buttons { margin-top: 2rem; display: flex; justify-content: flex-end; gap: 1rem; }
+.result-wrapper { text-align: center; }
+.result-icon { font-size: 4rem; line-height: 1; margin-bottom: 1.5rem; }
+.success-icon { color: #28a745; }
+.canceled-icon { color: #ffc107; }
+.next-steps { text-align: left; background-color: var(--color-surface-light); padding: 1.5rem; margin: 2rem 0; border-radius: 8px; border-left: 4px solid var(--color-text-muted); }
+.success-container .next-steps { border-left-color: #28a745; }
+.next-steps h4 { text-align: left; color: #fff; }
+.next-steps ol { padding-left: 1.5rem; }
+.button-loading::after { content: ''; position: absolute; width: 20px; height: 20px; top: 0; left: 0; right: 0; bottom: 0; margin: auto; border: 4px solid transparent; border-top-color: #ffffff; border-radius: 50%; animation: button-rotation 1s ease infinite; }
+.button-loading { position: relative; color: transparent !important; cursor: wait !important; }
+@keyframes button-rotation { 0% { transform: rotate(0turn); } 100% { transform: rotate(1turn); } }
+
+/* === 6. RESPONSIVIDAD === */
+@media (max-width: 768px) { .section { padding: 60px 0; } .section-title, .hero-title { font-size: 2.2rem; } .plans-container { flex-direction: column; align-items: center; } .plan-card { max-width: 420px; } .live-features-grid { grid-template-columns: 1fr; } .modal-buttons { flex-direction: column-reverse; } .modal-buttons .button { width: 100%; } }
+/* ================================================= */
+/* ESTILOS PARA BOTÓN DE WHATSAPP           */
+/* ================================================= */
+
+.whatsapp-float {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 40px;
+  right: 40px;
+  background-color: #25D366; /* Color oficial de WhatsApp */
+  color: #FFF;
+  border-radius: 50px;
+  text-align: center;
+  font-size: 30px;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+  z-index: 1000; /* Asegura que esté por encima de otros elementos */
+  transition: transform 0.3s ease;
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.1); /* Efecto de crecimiento al pasar el mouse */
+}
+
+.whatsapp-float i {
+  margin-top: 15px; /* Centrado vertical del ícono */
+}
+
+
+/* ================================================= */
+/* AJUSTES Y ESTILOS PARA NUEVAS SECCIONES       */
+/* ================================================= */
+
+/* Hace que el texto de las tarjetas de beneficios sea más legible */
+.benefit-card p {
+    color: #ccc; /* Un gris claro para el texto en fondos oscuros */
+}
+
+/* Ajusta el color del subtítulo para que se lea bien en fondos oscuros */
+.section-dark .subtitle {
+    color: #b0b8d4;
+}
+
+/* Ajustes para la sección de planes, que ahora tiene fondo claro */
+#plans {
+    background-color: #f9f9f9; /* Un fondo muy claro para alternar */
+}
+
+#plans .plan-card {
+    background-color: #ffffff; /* Tarjetas blancas */
+    border: 1px solid #e0e0e0;
+}
+
+#plans .plan-card h3,
+#plans .plan-card p,
+#plans .plan-card .benefits-list li {
+    color: #333; /* Texto oscuro para fondo claro */
+}
+
+#plans .price {
+    color: #1a1a1a;
+}
