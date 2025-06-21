@@ -10,6 +10,8 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
+    <script src="https://static.dlocalgo.com/dlocalgo.min.js" async></script>
+
     <style>
         /* === 1. SISTEMA DE DISEÑO Y VARIABLES === */
         :root {
@@ -247,6 +249,7 @@
         .plan-card.popular { border-color: var(--color-secondary); transform: scale(1.03); }
         .popular-badge { background: linear-gradient(45deg, var(--color-secondary), #c400ff); color: #fff; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.9rem; font-weight: 700; display: inline-block; margin-bottom: 1.5rem; }
         .plan-card .price { font-size: 3.5rem; font-weight: 800; margin: 1rem 0; color: var(--color-primary); }
+        .plan-card .price-note {font-size: 0.9rem; color: var(--color-text-muted); margin-top: -1rem; margin-bottom: 1rem;}
         .plan-card .plan-description { color: var(--color-text-muted); flex-grow: 1; margin-bottom: 1.5rem;}
         .benefits-list { text-align: left; margin: 1.5rem 0; padding-left: 1rem; list-style: none; }
         .benefits-list li { margin-bottom: 0.8rem; display: flex; align-items: flex-start; gap: 10px; }
@@ -268,7 +271,7 @@
         .back-to-main:hover { color: var(--color-primary); }
         .form-group { margin-bottom: 1.5rem; }
         .form-group label { display: block; color: var(--color-text); margin-bottom: 0.5rem; font-weight: 500; }
-        .form-group input { width: 100%; padding: 0.8rem 1rem; background-color: var(--color-background); border: 1px solid #333; border-radius: 8px; color: var(--color-text); font-size: 1rem; box-sizing: border-box; }
+        .form-group input, .form-group select { width: 100%; padding: 0.8rem 1rem; background-color: var(--color-background); border: 1px solid #333; border-radius: 8px; color: var(--color-text); font-size: 1rem; box-sizing: border-box; font-family: var(--font-family-base); }
         .form-group input[type="file"] { padding: 0.5rem; }
         .profile-pic-preview { max-width: 80px; height: 80px; border-radius: 50%; margin-top: 1rem; border: 2px solid var(--color-primary); object-fit: cover; }
         .input-group { display: flex; gap: 0.5rem; }
@@ -285,7 +288,8 @@
         .modal-content { background-color: var(--color-surface-light); padding: 2rem; border-radius: var(--border-radius); box-shadow: 0 5px 25px rgba(0,0,0,0.5); width: 90%; max-width: 500px; border-top: 3px solid var(--color-primary); }
         .order-summary p { margin-bottom: 0.5rem; }
         .order-summary p strong { color: var(--color-primary); }
-        .modal-buttons { margin-top: 2rem; display: flex; justify-content: flex-end; gap: 1rem; }
+        .modal-buttons { margin-top: 2rem; display: flex; flex-direction: column; align-items: stretch; gap: 1rem; }
+        #dlocal-payment-container { min-height: 50px; display: flex; justify-content: center; }
         .result-wrapper { text-align: center; }
         .result-icon { font-size: 4rem; line-height: 1; margin-bottom: 1.5rem; }
         .success-icon { color: #28a745; }
@@ -299,7 +303,7 @@
                 grid-template-columns: 1fr;
             }
             .quote-summary {
-                position: static; /* Deja de ser pegajoso en móviles */
+                position: static;
                 margin-top: 2rem;
             }
         }
@@ -312,76 +316,59 @@
             .modal-buttons .button { width: 100%; } 
             .header-container { flex-direction: column; gap: 15px; }
         }
-        /* =================================================================== */
-/* ESTILOS PARA EL RECUADRO DE GARANTÍA EN EL FORMULARIO        */
-/* =================================================================== */
-.guarantee-box {
-    margin-top: 2.5rem;
-    padding: 1.5rem;
-    background-color: rgba(0, 242, 234, 0.05); /* Un fondo muy sutil con el color primario */
-    border-radius: var(--border-radius);
-    border: 1px solid rgba(0, 242, 234, 0.2);
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.guarantee-icon {
-    font-size: 2.5rem;
-    color: var(--color-primary);
-}
-
-.guarantee-content h4 {
-    color: #fff;
-    margin-bottom: 0.5rem;
-}
-
-.guarantee-content p {
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
-    line-height: 1.6;
-}
-
-.guarantee-content p strong {
-    color: var(--color-primary);
-    font-weight: 600;
-}
-/* =================================================================== */
-/* ESTILOS MEJORADOS PARA EL BOTÓN DE VOLVER                   */
-/* =================================================================== */
-.back-to-main {
-    /* Forma y tamaño */
-    display: inline-flex; /* Para alinear icono y texto */
-    align-items: center;
-    gap: 0.75rem; /* Espacio entre icono y texto */
-    padding: 0.75rem 1.5rem;
-    border-radius: 50px; /* Forma de píldora moderna */
-    
-    /* Apariencia */
-    background-color: var(--color-surface-light);
-    border: 1px solid #333;
-    color: var(--color-text-muted);
-    font-size: 1rem;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-
-    /* Posición y transición */
-    margin-bottom: 2rem;
-    transition: all 0.3s ease;
-}
-
-.back-to-main:hover {
-    background-color: #333;
-    border-color: #444;
-    color: var(--color-primary);
-    transform: translateY(-3px); /* Efecto de "levantarse" */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.back-to-main i {
-    font-size: 1.1rem; /* Ajusta el tamaño del icono si es necesario */
-}
+        .guarantee-box {
+            margin-top: 2.5rem;
+            padding: 1.5rem;
+            background-color: rgba(0, 242, 234, 0.05);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(0, 242, 234, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .guarantee-icon {
+            font-size: 2.5rem;
+            color: var(--color-primary);
+        }
+        .guarantee-content h4 {
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        .guarantee-content p {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .guarantee-content p strong {
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+        .back-to-main {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            background-color: var(--color-surface-light);
+            border: 1px solid #333;
+            color: var(--color-text-muted);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+        .back-to-main:hover {
+            background-color: #333;
+            border-color: #444;
+            color: var(--color-primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .back-to-main i {
+            font-size: 1.1rem;
+        }
     </style>
 </head>
 <body>
@@ -447,31 +434,36 @@
                     </div>
                 </div>
             </section>
+            
             <section id="plans" class="section section-dark">
                 <div class="container">
                     <h2 class="section-title">Cuentas TikTok <span class="highlight-cyan">Listas para Monetizar</span></h2>
                     <p class="subtitle">Comienza a ganar dinero con tus videos y LIVES desde el primer día con una cuenta de región estratégica.</p>
                     <div class="plans-container">
-                        <div class="plan-card" data-plan="esencial">
-                            <h3>CUENTA <span class="highlight-pink">ESENCIAL</span></h3>
-                            <p class="price">S/ 25</p>
+                        
+                        <div class="plan-card" data-plan="basico">
+                            <h3>PLAN <span class="highlight-pink">BÁSICO</span></h3>
+                            <p class="price">S/ 20</p>
+                            <p class="price-note">Precio base para Perú</p>
                             <p class="plan-description">La forma más rápida y económica de activar las herramientas de monetización en tu perfil.</p>
                             <ul class="benefits-list">
                                 <li><i class="fas fa-check"></i><div>Cuenta de Región Europea (Francia).</div></li>
                                 <li><i class="fas fa-check"></i><div>Acceso al <strong>Programa de Creatividad</strong>.</div></li>
                                 <li><i class="fas fa-check"></i><div>Potencial para monetizar tus vistas.</div></li>
-                                 <li><i class="fas fa-check"></i><div>Acceso a TikTok Shop y Creator Marketplace.</div></li>
+                                <li><i class="fas fa-check"></i><div>Acceso a TikTok Shop y Creator Marketplace.</div></li>
                                 <li><i class="fas fa-check"></i><div>Estabilidad mejorada para LIVES.</div></li>
                             </ul>
                             <button class="button button-plan select-plan-button">Configurar y Pagar</button>
                         </div>
-                        <div class="plan-card popular" data-plan="premium">
+
+                        <div class="plan-card popular" data-plan="pro">
                             <div class="popular-badge"><i class="fas fa-crown"></i> Recomendado</div>
-                            <h3>CUENTA <span class="highlight-cyan">PREMIUM</span></h3>
-                            <p class="price">S/ 95</p>
+                            <h3>PLAN <span class="highlight-cyan">LIVE PRO</span></h3>
+                            <p class="price">S/ 90</p>
+                            <p class="price-note">Precio base para Perú</p>
                             <p class="plan-description">El paquete definitivo para dominar TikTok y monetizar desde el día uno, con todo configurado y una base de seguidores.</p>
                             <ul class="benefits-list">
-                                <li><i class="fas fa-check"></i><div><strong>Todo lo del Plan Esencial, y además:</strong></div></li>
+                                <li><i class="fas fa-check"></i><div><strong>Todo lo del Plan Básico, y además:</strong></div></li>
                                 <li><i class="fas fa-check"></i><div>Programa Beta de Creatividad <strong>¡LISTO USAR!</strong></div></li>
                                 <li><i class="fas fa-check"></i><div>Función de <strong>transmisión EN VIVO</strong> activada.</div></li>
                                 <li><i class="fas fa-check"></i><div>Acceso a TikTok Shop y Creator Marketplace.</div></li>
@@ -482,6 +474,7 @@
                             </ul>
                             <button class="button button-plan select-plan-button">Configurar y Pagar</button>
                         </div>
+
                     </div>
                 </div>
             </section>
@@ -566,12 +559,26 @@
 
     <div id="form-page" class="page-container" style="display: none;">
         <div class="form-wrapper">
-<button class="back-to-main"><i class="fas fa-arrow-left"></i> Volver al Inicio</button>            <h2 id="form-title" class="section-title" style="text-align: left; font-size: 2.2rem;"></h2>
+            <button class="back-to-main"><i class="fas fa-arrow-left"></i> Volver al Inicio</button>
+            <h2 id="form-title" class="section-title" style="text-align: left; font-size: 2.2rem;"></h2>
             <p class="subtitle" style="text-align: left; margin: 0 0 2rem 0;">Completa tus datos para la nueva cuenta. Esta información es confidencial y solo se usa para la creación de tu pedido.</p>
             
             <form id="pre-payment-form" action="https://formspree.io/f/mkgbodzk" method="POST">
                 <div class="form-group"><label for="customer-email">Tu Correo Electrónico:</label><input type="email" id="customer-email" name="email" required placeholder="Para enviarte los accesos y confirmaciones"></div>
                 <div class="form-group"><label for="customer-phone">Tu Teléfono (WhatsApp):</label><input type="tel" id="customer-phone" name="phone" required placeholder="Para contacto directo si es necesario"></div>
+                
+                <div class="form-group">
+                    <label for="customer-country">País de Residencia (para el pago):</label>
+                    <select id="customer-country" name="country" required>
+                        <option value="">-- Selecciona tu país --</option>
+                        <option value="PE">Perú</option>
+                        <option value="CL">Chile</option>
+                        <option value="BO">Bolivia</option>
+                        <option value="AR">Argentina</option>
+                        <option value="CO">Colombia</option>
+                    </select>
+                </div>
+
                 <div class="form-group"><label for="tiktok-username">Username deseado para TikTok:</label><div class="input-group"><input type="text" id="tiktok-username" name="username" required pattern="^@[a-zA-Z0-9_.]+$" placeholder="@tunombrecreativo"><button type="button" id="verify-username-btn">Verificar</button></div><p id="username-status"></p></div>
                 <div class="form-group"><label for="profile-pic">Foto de Perfil deseada (opcional):</label><input type="file" id="profile-pic" name="profile_pic_file" accept="image/*"><img id="profile-pic-preview" class="profile-pic-preview" src="#" alt="Vista previa" style="display:none;"/></div>
                 <input type="hidden" name="profile_pic_url" id="profile-pic-url">
@@ -592,20 +599,26 @@
 
         </div>
     </div>
+
     <div id="confirmation-modal" class="modal-overlay" style="display: none;">
          <div class="modal-content">
-             <h3>Confirmar Detalles del Pedido</h3><p style="color: var(--color-text-muted);">Revisa que toda la información sea correcta antes de pagar.</p><br>
-             <div class="order-summary">
-                 <p><strong>Plan:</strong> <span id="modal-summary-plan"></span></p>
-                 <p><strong>Precio:</strong> <span id="modal-summary-price"></span></p>
-                 <p><strong>Email:</strong> <span id="modal-summary-email"></span></p>
-                 <p><strong>Teléfono:</strong> <span id="modal-summary-phone"></span></p>
-                 <p><strong>Username:</strong> <span id="modal-summary-username"></span></p>
-                 <div id="modal-summary-post-url-container" style="display: none;"><p><strong>URL Video:</strong> <span id="modal-summary-post-url"></span></p></div>
-             </div>
-             <div class="modal-buttons"><button id="edit-details-btn" class="button button-secondary">Corregir</button><button id="confirm-and-pay-btn" class="button button-primary">Confirmar y Pagar</button></div>
+            <h3>Confirmar Detalles del Pedido</h3><p style="color: var(--color-text-muted);">Revisa que toda la información sea correcta antes de pagar.</p><br>
+            <div class="order-summary">
+                <p><strong>Plan:</strong> <span id="modal-summary-plan"></span></p>
+                <p><strong>Precio:</strong> <span id="modal-summary-price"></span></p>
+                <p><strong>País:</strong> <span id="modal-summary-country"></span></p>
+                <p><strong>Email:</strong> <span id="modal-summary-email"></span></p>
+                <p><strong>Teléfono:</strong> <span id="modal-summary-phone"></span></p>
+                <p><strong>Username:</strong> <span id="modal-summary-username"></span></p>
+                <div id="modal-summary-post-url-container" style="display: none;"><p><strong>URL Video:</strong> <span id="modal-summary-post-url"></span></p></div>
+            </div>
+            <div class="modal-buttons">
+                <div id="dlocal-payment-container"></div>
+                <button id="edit-details-btn" class="button button-secondary">Corregir Datos</button>
+            </div>
          </div>
     </div>
+
     <div id="success-page" class="page-container" style="display: none;">
         <div class="result-wrapper">
             <div class="result-icon success-icon"><i class="fas fa-check-circle"></i></div>
@@ -631,6 +644,26 @@
         const CLOUDINARY_CLOUD_NAME = 'daassyisd'; 
         const CLOUDINARY_UPLOAD_PRESET = 'Presenten_react';
         
+        // --- NUEVA CONFIGURACIÓN DE PAGOS POR PAÍS ---
+        const DLOCAL_GO_KEY = "ROnTDifVRPciDQVYRCMJXUzdxxnFrfos";
+        const paymentDetails = {
+            'basico': {
+                'PE': { country: 'PE', currency: 'PEN', amount: '20.00', text: 'Pagar Plan Básico (S/ 20.00)' },
+                'CL': { country: 'CL', currency: 'CLP', amount: '5056.88', text: 'Pagar Plan Básico (CLP 5,057)' },
+                'BO': { country: 'BO', currency: 'BOB', amount: '100.06', text: 'Pagar Plan Básico (BOB 100)' },
+                'AR': { country: 'AR', currency: 'ARS', amount: '6367.40', text: 'Pagar Plan Básico (ARS 6,367)' },
+                'CO': { country: 'CO', currency: 'COP', amount: '22119.80', text: 'Pagar Plan Básico (COP 22,120)' }
+            },
+            'pro': {
+                'PE': { country: 'PE', currency: 'PEN', amount: '90.00', text: 'Pagar Plan Pro (S/ 90.00)' },
+                'CL': { country: 'CL', currency: 'CLP', amount: '25284.39', text: 'Pagar Plan Pro (CLP 25,284)' },
+                'BO': { country: 'BO', currency: 'BOB', amount: '500.31', text: 'Pagar Plan Pro (BOB 500)' },
+                'AR': { country: 'AR', currency: 'ARS', amount: '31837.03', text: 'Pagar Plan Pro (ARS 31,837)' },
+                'CO': { country: 'CO', currency: 'COP', amount: '110599.02', text: 'Pagar Plan Pro (COP 110,600)' }
+            }
+        };
+        const countryNames = { 'PE': 'Perú', 'CL': 'Chile', 'BO': 'Bolivia', 'AR': 'Argentina', 'CO': 'Colombia' };
+
         const servicesData = {
             instagram: { name: 'Instagram', icon: 'fab fa-instagram', services: [ { id: 'ig-followers', name: 'Seguidores Reales', pricePerUnit: 0.018, min: 500, max: 10000, step: 100, default: 1000 }, { id: 'ig-likes', name: 'Me Gusta Reales', pricePerUnit: 0.008, min: 100, max: 5000, step: 50, default: 500 } ] },
             facebook: { name: 'Facebook', icon: 'fab fa-facebook-f', services: [ { id: 'fb-prof-followers', name: 'Seguidores (Perfil)', pricePerUnit: 0.012, min: 500, max: 10000, step: 100, default: 1000 }, { id: 'fb-page-followers', name: 'Seguidores (Página)', pricePerUnit: 0.013, min: 500, max: 10000, step: 100, default: 1000 }, ] },
@@ -642,15 +675,12 @@
         
         let currentQuote = {};
 
-        // --- LÓGICA DE LA CALCULADORA DE SERVICIOS ---
         function initCalculator() {
             const tabsNav = document.querySelector('.tabs-nav');
             const tabsContent = document.querySelector('.tabs-content');
             if (!tabsNav || !tabsContent) return;
-
             tabsNav.innerHTML = '';
             tabsContent.innerHTML = '';
-
             Object.keys(servicesData).forEach((platformKey, index) => {
                 const platform = servicesData[platformKey];
                 const tabButton = document.createElement('button');
@@ -658,11 +688,9 @@
                 tabButton.dataset.platform = platformKey;
                 tabButton.innerHTML = `<i class="${platform.icon}"></i> ${platform.name}`;
                 tabsNav.appendChild(tabButton);
-
                 const pane = document.createElement('div');
                 pane.id = `tab-${platformKey}`;
                 pane.className = `tab-pane ${index === 0 ? 'active' : ''}`;
-                
                 const servicesGrid = document.createElement('div');
                 servicesGrid.className = 'services-grid';
                 platform.services.forEach(service => {
@@ -674,11 +702,9 @@
                 pane.appendChild(servicesGrid);
                 tabsContent.appendChild(pane);
             });
-            
             addCalculatorEventListeners();
             updateAllPrices();
         }
-
         function addCalculatorEventListeners() {
             document.querySelectorAll('.tab-button').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.platform)));
             document.querySelectorAll('.service-input-group input').forEach(i => i.addEventListener('input', handleInputChange));
@@ -688,7 +714,6 @@
             }));
             document.getElementById('whatsapp-quote-btn').addEventListener('click', sendQuoteToWhatsApp);
         }
-        
         function handleInputChange(e) {
             const id = e.target.id;
             const value = e.target.value;
@@ -698,7 +723,6 @@
             document.getElementById(`slider-${serviceId}`).value = value;
             updatePrice(serviceId);
         }
-
         function getServiceById(serviceId) {
             for (const key in servicesData) {
                 const found = servicesData[key].services.find(s => s.id === serviceId);
@@ -706,24 +730,20 @@
             }
             return null;
         }
-
         function updatePrice(serviceId) {
             const service = getServiceById(serviceId);
             if (!service) return;
             const price = document.getElementById(`input-${serviceId}`).value * service.pricePerUnit;
             document.getElementById(`price-${serviceId}`).textContent = `S/ ${price.toFixed(2)}`;
         }
-        
         function updateAllPrices() {
             Object.values(servicesData).forEach(p => p.services.forEach(s => updatePrice(s.id)));
         }
-
         function switchTab(platformKey) {
             document.querySelectorAll('.tab-button, .tab-pane').forEach(el => el.classList.remove('active'));
             document.querySelector(`.tab-button[data-platform="${platformKey}"]`).classList.add('active');
             document.getElementById(`tab-${platformKey}`).classList.add('active');
         }
-
         function addServiceToQuote(serviceId, quantity) {
             const service = getServiceById(serviceId);
             if (!service || quantity < service.min) {
@@ -733,12 +753,10 @@
             currentQuote[serviceId] = { name: service.name, quantity: quantity, price: quantity * service.pricePerUnit };
             updateQuoteSummary();
         }
-        
         function removeServiceFromQuote(serviceId) {
             delete currentQuote[serviceId];
             updateQuoteSummary();
         }
-
         function updateQuoteSummary() {
             const quoteItemsEl = document.getElementById('quote-items');
             const quoteTotalEl = document.getElementById('quote-total');
@@ -746,7 +764,6 @@
             quoteItemsEl.innerHTML = '';
             let total = 0;
             const hasItems = Object.keys(currentQuote).length > 0;
-
             if (!hasItems) {
                 quoteItemsEl.innerHTML = '<li class="empty-quote">Añade servicios para cotizar.</li>';
             } else {
@@ -754,17 +771,14 @@
                     const item = currentQuote[serviceId];
                     total += item.price;
                     const li = document.createElement('li');
-                    li.innerHTML = `<span>${item.quantity.toLocaleString('es-PE')} ${item.name}</span><span>S/ ${item.price.toFixed(2)}</span><button class="remove-quote-item" data-service-id="${serviceId}">&times;</button>`;
+                    li.innerHTML = `<span>${item.quantity.toLocaleString('es-PE')} ${item.name}</span><span>S/ ${item.price.toFixed(2)}</span><button class="remove-quote-item" data-service-id="${serviceId}">×</button>`;
                     quoteItemsEl.appendChild(li);
                 }
             }
-            
             quoteTotalEl.innerHTML = `<span class="quote-total-label">Total</span> S/ ${total.toFixed(2)}`;
             whatsappBtn.toggleAttribute('disabled', !hasItems);
-            
             document.querySelectorAll('.remove-quote-item').forEach(b => b.addEventListener('click', () => removeServiceFromQuote(b.dataset.serviceId)));
         }
-
         function sendQuoteToWhatsApp(e) {
             e.preventDefault();
             let message = "Hola VIRALIZA, quisiera cotizar los siguientes servicios:\n\n";
@@ -780,7 +794,6 @@
         }
 
         // --- LÓGICA DE PÁGINAS (TIKTOK) Y NAVEGACIÓN GENERAL ---
-        // ... (El código anterior para el flujo de compra de TikTok se mantiene aquí, sin cambios) ...
         const mainContent = document.getElementById('main-content');
         const formPage = document.getElementById('form-page');
         const successPage = document.getElementById('success-page');
@@ -791,17 +804,12 @@
         const prePaymentForm = document.getElementById('pre-payment-form');
         const verifyUsernameBtn = document.getElementById('verify-username-btn');
         const editDetailsBtn = document.getElementById('edit-details-btn');
-        const confirmAndPayBtn = document.getElementById('confirm-and-pay-btn');
         const backToHomeButtons = document.querySelectorAll('.back-to-home-btn');
         const backToMainBtn = document.querySelector('.back-to-main');
         const navLinks = document.querySelectorAll('.nav-link');
         const homeLinks = document.querySelectorAll('.nav-link-home');
 
         let currentPlan = null;
-        const paymentLinks = {
-            esencial: { price: 25, url: 'https://mpago.la/1e7iqK6' },
-            premium: { price: 95, url: 'https://mpago.la/1szeruX' }
-        };
 
         function showPage(pageId) {
             allPages.forEach(page => { if(page) page.style.display = 'none'; });
@@ -824,7 +832,7 @@
                         if (elementToScroll) elementToScroll.scrollIntoView({ behavior: 'smooth' });
                     }, 100);
                 } else {
-                     if (targetElement) {
+                    if (targetElement) {
                         e.preventDefault();
                         const headerOffset = document.querySelector('.header')?.offsetHeight || 80;
                         const elementPosition = targetElement.getBoundingClientRect().top;
@@ -845,14 +853,16 @@
         if (selectPlanButtons) {
             selectPlanButtons.forEach(button => {
                 button.addEventListener('click', function() {
-                    currentPlan = this.closest('.plan-card').dataset.plan;
-                    const planData = paymentLinks[currentPlan];
-                    document.getElementById('form-title').textContent = `Configurar Cuenta ${currentPlan.charAt(0).toUpperCase() + currentPlan.slice(1)}`;
+                    currentPlan = this.closest('.plan-card').dataset.plan; // 'basico' o 'pro'
+                    const planName = (currentPlan === 'basico') ? "Plan Básico" : "Plan Live Pro";
+                    
+                    document.getElementById('form-title').textContent = `Configurar ${planName}`;
                     const lastPostUrlGroup = document.getElementById('last-post-url-group');
-                    lastPostUrlGroup.style.display = (currentPlan === 'premium') ? 'block' : 'none';
-                    if(document.getElementById('last-post-url')) document.getElementById('last-post-url').required = (currentPlan === 'premium');
+                    lastPostUrlGroup.style.display = (currentPlan === 'pro') ? 'block' : 'none';
+                    if(document.getElementById('last-post-url')) document.getElementById('last-post-url').required = (currentPlan === 'pro');
+                    
                     document.getElementById('form-submit-button').textContent = `Continuar a la Confirmación`;
-                    document.getElementById('hidden-plan-input').value = `Plan ${currentPlan.charAt(0).toUpperCase() + currentPlan.slice(1)} (S/ ${planData.price})`;
+                    document.getElementById('hidden-plan-input').value = planName;
                     prePaymentForm.reset();
                     document.getElementById('username-status').textContent = '';
                     if(document.getElementById('profile-pic-preview')) document.getElementById('profile-pic-preview').style.display = 'none';
@@ -969,23 +979,53 @@
             });
         }
 
+        // FUNCIÓN DEL MODAL MODIFICADA
         function showConfirmationModal(data) {
-            const planData = paymentLinks[currentPlan];
-            document.getElementById('modal-summary-plan').textContent = currentPlan.charAt(0).toUpperCase() + currentPlan.slice(1);
-            document.getElementById('modal-summary-price').textContent = `S/ ${planData.price.toFixed(2)} PEN`;
+            const selectedCountryCode = data.country;
+            const details = paymentDetails[currentPlan]?.[selectedCountryCode];
+
+            if (!details) {
+                alert("Error: No se encontraron detalles de pago para el país seleccionado.");
+                return;
+            }
+            
+            // Llenar datos del resumen
+            document.getElementById('modal-summary-plan').textContent = (currentPlan === 'basico' ? 'Plan Básico' : 'Plan Live Pro');
+            document.getElementById('modal-summary-price').textContent = `${details.amount} ${details.currency}`;
+            document.getElementById('modal-summary-country').textContent = countryNames[selectedCountryCode] || selectedCountryCode;
             document.getElementById('modal-summary-email').textContent = data.email;
             document.getElementById('modal-summary-phone').textContent = data.phone;
             document.getElementById('modal-summary-username').textContent = data.username;
+            
             const postUrlContainer = document.getElementById('modal-summary-post-url-container');
-            if (currentPlan === 'premium' && data.last_post_url) {
+            if (currentPlan === 'pro' && data.last_post_url) {
                 document.getElementById('modal-summary-post-url').textContent = data.last_post_url;
                 postUrlContainer.style.display = 'block';
-            } else { postUrlContainer.style.display = 'none'; }
+            } else { 
+                postUrlContainer.style.display = 'none'; 
+            }
+            
+            // Generar el botón de pago dinámico
+            const paymentContainer = document.getElementById('dlocal-payment-container');
+            paymentContainer.innerHTML = ''; // Limpiar el contenedor
+            
+            const divId = 'dlocal-btn-' + new Date().getTime();
+            const btnDiv = document.createElement('div');
+            btnDiv.id = divId;
+            paymentContainer.appendChild(btnDiv);
+
+            try {
+                new DlocalGo(DLOCAL_GO_KEY).createCheckout(divId, details);
+            } catch (error) {
+                console.error("DlocalGo no está disponible o falló.", error);
+                paymentContainer.innerHTML = '<p style="color:red;">Error al cargar el botón de pago.</p>';
+            }
+
+            // Mostrar el modal
             confirmationModal.style.display = 'flex';
         }
 
         if(editDetailsBtn) editDetailsBtn.addEventListener('click', () => { confirmationModal.style.display = 'none'; });
-        if(confirmAndPayBtn) confirmAndPayBtn.addEventListener('click', () => { window.location.href = paymentLinks[currentPlan].url; });
         
         function handleRedirect() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -994,15 +1034,18 @@
                 showPage('success-page');
             } else if (status === 'failure' || status === 'pending') {
                 showPage('canceled-page');
-            } else {
-                showPage('main-content');
             }
             history.replaceState(null, '', window.location.pathname);
         }
         
         window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('status')) {
+                 handleRedirect();
+            } else {
+                 showPage('main-content');
+            }
             initCalculator();
-            handleRedirect();
         });
     });
     </script>
