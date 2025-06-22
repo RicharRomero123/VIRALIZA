@@ -714,17 +714,6 @@
             }));
             document.getElementById('whatsapp-quote-btn').addEventListener('click', sendQuoteToWhatsApp);
         }
-        window.addEventListener('load', () => {
-  const hash = window.location.hash;
-
-  document.querySelectorAll('.page-container').forEach(p => p.style.display = 'none');
-
-  if (hash === '#success') {
-    document.getElementById('success-page').style.display = 'block';
-  } else {
-    document.getElementById('main-content').style.display = 'block';
-  }
-});
 
         function handleInputChange(e) {
             const id = e.target.id;
